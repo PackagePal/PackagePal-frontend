@@ -9,8 +9,8 @@ import Admin from "./Admin";
 function App() {
     return (
         <Router>
-            <Login/>
             <Routes>
+                <Route path="/" element={<Login/>}/>
                 <Route path="/admin" element={<Admin/>}/>
                 <Route path="/points" element={<Points/>}/>
                 <Route path="/statistics" element={<Statistics/>}/>

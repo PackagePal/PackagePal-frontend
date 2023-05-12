@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import logo from "../images/logo.jpg";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-
+    const history = useNavigate();
+    const handleClick = () => {
+        console.log('Login button clicked');
+        history('/admin');
+    }
     return (
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -50,7 +54,7 @@ function Login() {
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-secondary" >
+                            <button className="btn btn-secondary"  type="button" onClick={handleClick} >
                                 Login
                             </button>
                         </div>
