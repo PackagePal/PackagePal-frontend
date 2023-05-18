@@ -35,8 +35,5 @@ jobs:
         run: |
           cd admin 
           npm ci
-        
-      - name: Build and test
-        run: |
           npm run build
           npm test
