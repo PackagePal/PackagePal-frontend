@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: 14
           
+      - name: Navigate to frontend folder
+        run: cd admin
+          
       - name: Install Dependecies
         run: npm ci
         
