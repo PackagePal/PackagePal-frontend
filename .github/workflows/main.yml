@@ -26,10 +26,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.5.2
         with:
-          node-version: 14
-          
-      - name: Navigate to frontend folder
-        run: cd admin
+          node-version: 18
           
       - name: Build and Tests
         run: |
