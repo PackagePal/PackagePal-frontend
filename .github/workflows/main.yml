@@ -31,9 +31,9 @@ jobs:
       - name: Navigate to frontend folder
         run: cd admin
           
-      - name: Install Dependecies
+      - name: Build and Tests
         run: |
           cd admin 
           npm ci
-          npm run build
+          npm run build --if-present
           npm test
