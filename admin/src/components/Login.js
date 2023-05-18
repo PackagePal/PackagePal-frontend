@@ -8,8 +8,13 @@ function Login() {
     const history = useNavigate();
     const handleClick = () => {
         console.log('Login button clicked');
-        history('/admin');
-    }
+        if (username.toLowerCase() === 'admin') {
+          history('/admin');
+        } else if (username.toLowerCase() === 'acp') {
+          history('/acp');
+        }
+      }
+      
     return (
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row-reverse">
