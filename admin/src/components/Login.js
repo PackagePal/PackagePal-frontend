@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import react from "react";
 import logo from "../images/logo.jpg";
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = react.useState("");
+    const [password, setPassword] = react.useState("");
     const history = useNavigate();
     const handleClick = () => {
         console.log('Login button clicked');
@@ -16,7 +16,7 @@ function Login() {
                 <div className="text-center lg:text-left">
                     <div className="avatar">
                         <div className="card flex-shrink-0 w-96 shadow-2xl">
-                            <img src={logo} />
+                            <img src={logo} alt="Logo"/>
                         </div>
                     </div>
                 </div>
@@ -26,14 +26,14 @@ function Login() {
                         <h1 className="text-center text-3xl font-bold">Login!</h1>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Email</span>
+                                <span className="label-text">Username</span>
                             </label>
                             <input
                                 type="text"
-                                placeholder="email"
+                                placeholder="username"
                                 className="input input-bordered"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
                         <div className="form-control">
@@ -47,11 +47,6 @@ function Login() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">
-                                    Forgot password?
-                                </a>
-                            </label>
                         </div>
                         <div className="form-control mt-6">
                             <button className="btn btn-secondary"  type="button" onClick={handleClick} >
