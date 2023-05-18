@@ -32,7 +32,9 @@ jobs:
         run: cd admin
           
       - name: Install Dependecies
-        run: npm ci
+        run: |
+          cd admin 
+          npm ci
         
       - name: Build and test
         run: |
