@@ -20,7 +20,7 @@ function Table() {
                     <tr>
                         <th>1</th>
                         <td>Optica de Esgueira</td>
-                        <td>Esgueira</td>
+                        <td>Aveiro</td>
                         <td>Rua Jose Luciano de Castro 155</td>
                         <td>3800-207</td>
                         <td>40.6473479</td>

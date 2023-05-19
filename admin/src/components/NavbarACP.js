@@ -15,6 +15,7 @@ function NavbarACP() {
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">
                     <li><a href='/incoming'>Incoming</a></li>
+                    <li><a href='/'>Log out</a></li>
                 </ul>
             </div>
         </div>
