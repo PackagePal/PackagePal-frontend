@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
 
-function TableAccept() {
+function StoreAccept() {
     const [data, setData] = useState([
         {
             id: 1,
-            name: 'Optica de Esgueira',
-            city: 'Esgueira',
-            address: 'Rua Jose Luciano de Castro 155',
-            postalCode: '3800-207',
-            lat: '40.6473479',
-            long: '-8.6339323'
+            eStore: 'Optica de Esgueira',
+            products: 'Esgueira'
         },
         {
             id: 2,
-            name: 'Locker FNAC Aveiro',
-            city: 'Aveiro',
-            address: 'R do Batalhao de Cacadores 10',
-            postalCode: '3810-064',
-            lat: '40.6410097',
-            long: '-8.6534492'
+            eStore: 'Locker FNAC Aveiro',
+            products: 'Aveiro'
         }
     ]);
 
@@ -28,7 +20,7 @@ function TableAccept() {
         console.log(`Remove button clicked for item ${id}`);
         const updatedData = data.filter((item) => item.id !== id);
         setData(updatedData);
-        setCheckInMessage('Point Declined');
+        setCheckInMessage('eStore Declined');
     };
 
     const handleAcceptClick = (id) => {
@@ -36,7 +28,7 @@ function TableAccept() {
         // Add your logic for accepting the item here
         const updatedData = data.filter((item) => item.id !== id);
         setData(updatedData);
-        setCheckInMessage('Point Accepted');
+        setCheckInMessage('eStore Accepted');
     };
 
     return (
@@ -47,12 +39,8 @@ function TableAccept() {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>City</th>
-                        <th>Address</th>
-                        <th>Postal Code</th>
-                        <th>Lat</th>
-                        <th>Long</th>
+                        <th>eStore</th>
+                        <th>Products</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -61,12 +49,8 @@ function TableAccept() {
                     {data.map((item) => (
                         <tr key={item.id}>
                             <th>{item.id}</th>
-                            <td>{item.name}</td>
-                            <td>{item.city}</td>
-                            <td>{item.address}</td>
-                            <td>{item.postalCode}</td>
-                            <td>{item.lat}</td>
-                            <td>{item.long}</td>
+                            <td>{item.eStore}</td>
+                            <td>{item.products}</td>
                             <td>
                                 <button
                                     className="btn btn-secondary btn-square btn-xs"
@@ -107,4 +91,4 @@ function TableAccept() {
     );
 }
 
-export default TableAccept;
+export default StoreAccept;

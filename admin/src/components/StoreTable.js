@@ -1,24 +1,16 @@
 import React, { useState } from "react";
+function StoreTable(){
 
-function Table() {
     const [data, setData] = useState([
         {
             id: 1,
-            name: "Optica de Esgueira",
-            city: "Aveiro",
-            address: "Rua Jose Luciano de Castro 155",
-            postalCode: "3800-207",
-            lat: "40.6473479",
-            long: "-8.6339323",
+            eStore: "Readly",
+            products: "Books"
         },
         {
             id: 2,
-            name: "Locker FNAC Aveiro",
-            city: "Aveiro",
-            address: "R do Batalhao de Cacadores 10",
-            postalCode: "3810-064",
-            lat: "40.6410097",
-            long: "-8.6534492",
+            eStore: "Worten",
+            products: "Electronics"
         },
     ]);
 
@@ -29,9 +21,8 @@ function Table() {
         const updatedData = data.filter((item) => item.id !== id);
         setData(updatedData);
         // Set the "Point removed" message
-        setCheckInMessage('Point removed');
+        setCheckInMessage('eStore removed');
     };
-
     return (
         <div className="overflow-x-auto">
             <div className="text-center mt-4 mb-4">
@@ -40,12 +31,8 @@ function Table() {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>City</th>
-                        <th>Address</th>
-                        <th>Postal Code</th>
-                        <th>Lat</th>
-                        <th>Long</th>
+                        <th>eStore</th>
+                        <th>Products</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -53,12 +40,8 @@ function Table() {
                     {data.map((item) => (
                         <tr key={item.id}>
                             <th>{item.id}</th>
-                            <td>{item.name}</td>
-                            <td>{item.city}</td>
-                            <td>{item.address}</td>
-                            <td>{item.postalCode}</td>
-                            <td>{item.lat}</td>
-                            <td>{item.long}</td>
+                            <td>{item.eStore}</td>
+                            <td>{item.products}</td>
                             <td>
                                 <button
                                     className="btn btn-secondary btn-square btn-xs"
@@ -85,7 +68,6 @@ function Table() {
                 </tbody>
             </table>
         </div>
-    );
+    )
 }
-
-export default Table;
+export default StoreTable;
