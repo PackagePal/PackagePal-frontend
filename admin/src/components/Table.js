@@ -1,36 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function Table() {
-    const [data, setData] = useState([
-        {
-            id: 1,
-            name: "Optica de Esgueira",
-            city: "Aveiro",
-            address: "Rua Jose Luciano de Castro 155",
-            postalCode: "3800-207",
-            lat: "40.6473479",
-            long: "-8.6339323",
-        },
-        {
-            id: 2,
-            name: "Locker FNAC Aveiro",
-            city: "Aveiro",
-            address: "R do Batalhao de Cacadores 10",
-            postalCode: "3810-064",
-            lat: "40.6410097",
-            long: "-8.6534492",
-        },
-    ]);
+const Table = () => {
+    const [data, setData] = useState([]);
 
     const [checkInMessage, setCheckInMessage] = useState('');
 
     const handleRemoveClick = (id) => {
-        // Remove the item with the given id from the data array
         const updatedData = data.filter((item) => item.id !== id);
         setData(updatedData);
-        // Set the "Point removed" message
         setCheckInMessage('Point removed');
     };
+
+    const getCache = async () => {
+        await fetch(`http://localhost:8080/api/v1/pickuppoints/`, {
+        })
+            .then((res) => {
+                if (res.status === 200) return res.json();
+            })
+            .then((data) => {
+                setData(data);
+            });
+    };
+
+    useEffect(() => {
+        getCache();
+    }, []);
 
     return (
         <div className="overflow-x-auto">
@@ -39,10 +33,10 @@ function Table() {
             <table className="table table-compact w-full">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Id</th>
                         <th>Name</th>
-                        <th>City</th>
                         <th>Address</th>
+                        <th>City</th>
                         <th>Postal Code</th>
                         <th>Lat</th>
                         <th>Long</th>
@@ -52,13 +46,13 @@ function Table() {
                 <tbody>
                     {data.map((item) => (
                         <tr key={item.id}>
-                            <th>{item.id}</th>
-                            <td>{item.name}</td>
-                            <td>{item.city}</td>
-                            <td>{item.address}</td>
-                            <td>{item.postalCode}</td>
-                            <td>{item.lat}</td>
-                            <td>{item.long}</td>
+                            <td>{item.id}</td>
+                            <td>{item.name || '-'}</td>
+                            <td>{item.address || '-'}</td>
+                            <td>{item.city || '-'}</td>
+                            <td>{item.postalCode || '-'}</td>
+                            <td>{item.lat || '-'}</td>
+                            <td>{item.lng || '-'}</td>
                             <td>
                                 <button
                                     className="btn btn-secondary btn-square btn-xs"

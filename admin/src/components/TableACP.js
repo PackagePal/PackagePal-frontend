@@ -1,45 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function TableACP() {
-    const [tableData, setTableData] = useState([
-        {
-            id: 1,
-            trackingNumber: '1Z12345E0291980793',
-            name: 'António Ramos',
-            contact: '961111111',
-            type: 'Magazine',
-            eStore: 'Readly'
-        },
-        {
-            id: 2,
-            trackingNumber: 'LT987654321CN',
-            name: 'Maria dos Ceus',
-            contact: '961222222',
-            type: 'Book',
-            eStore: 'Bertrand'
-        },
-    ]);
+const TableACP = () => {
+    const [data, setData] = useState([]);
+    const getCache = async () => {
+        await fetch(`http://localhost:8080/api/v1/packages/`, {
+        })
+            .then((res) => {
+                if (res.status === 200) return res.json();
+            })
+            .then((data) => {
+                setData(data);
+            });
+    };
 
-    const [deliveredMessage, setDeliveredMessage] = useState('');
+    useEffect(() => {
+        getCache();
+    }, []);
+
+    const [deliveredMessage, setCheckInMessage] = useState('');
 
     const handleAcceptClick = (id) => {
-        console.log(`Accept button clicked for item ${id}`);
-
-        // Filter out the item with the matching ID from the table data array
-        const updatedData = tableData.filter((item) => item.id !== id);
-
-        // Update the table data state with the filtered array
-        setTableData(updatedData);
-
-        // Set the delivered message
-        setDeliveredMessage('Collected!');
+        const updatedData = data.filter((item) => item.id !== id);
+        setData(updatedData);
+        setCheckInMessage('Collected');
     };
 
     return (
         <div className="overflow-x-auto">
             {deliveredMessage && (
                 <div className="text-center mt-4 mb-4">
-                    <h2 className="text-2xl text-bg-accent"  te>{deliveredMessage}</h2>
+                    <h2 className="text-2xl text-bg-accent" te>{deliveredMessage}</h2>
                 </div>
             )}
             <table className="table table-compact w-full">
@@ -49,20 +39,20 @@ function TableACP() {
                         <th>Tracking Number</th>
                         <th>Name</th>
                         <th>Contact</th>
-                        <th>Type</th>
+                        <th>Status</th>
                         <th>eStore</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {tableData.map((item) => (
+                    {data.map((item) => (
                         <tr key={item.id}>
-                            <th>{item.id}</th>
-                            <td>{item.trackingNumber}</td>
-                            <td>{item.name}</td>
-                            <td>{item.contact}</td>
-                            <td>{item.type}</td>
-                            <td>{item.eStore}</td>
+                            <td>{item.id}</td>
+                            <td>{item.packageId || '-'}</td>
+                            <td>{item.userName || '-'}</td>
+                            <td>{item.userEmail || '-'}</td>
+                            <td>{item.status || '-'}</td>
+                            <td>{item.store.name || '-'}</td>
                             <td>
                                 <button className="btn btn-accent btn-square btn-xs" onClick={() => handleAcceptClick(item.id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

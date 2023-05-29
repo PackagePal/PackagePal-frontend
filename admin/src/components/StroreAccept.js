@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Navbar from './Navbar';
 
-function StoreAccept() {
-    const [data, setData] = useState([
-        {
-            id: 1,
-            eStore: 'Optica de Esgueira',
-            products: 'Esgueira'
-        },
-        {
-            id: 2,
-            eStore: 'Locker FNAC Aveiro',
-            products: 'Aveiro'
-        }
-    ]);
+const StoreAccept = () => {
+    const [data, setData] = useState([]);
 
     const [checkInMessage, setCheckInMessage] = useState('');
 
@@ -25,22 +15,37 @@ function StoreAccept() {
 
     const handleAcceptClick = (id) => {
         console.log(`Accept button clicked for item ${id}`);
-        // Add your logic for accepting the item here
         const updatedData = data.filter((item) => item.id !== id);
         setData(updatedData);
         setCheckInMessage('eStore Accepted');
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/v1/stores/');
+                if (response.status === 200) {
+                    const data = await response.json();
+                    setData(data);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
-        <div className="overflow-x-auto">
+        <><Navbar /><div className="overflow-x-auto">
             <div className="text-center mt-4 mb-4">
                 <h2 className="text-2xl">{checkInMessage}</h2></div>
             <table className="table table-compact w-full">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Id</th>
                         <th>eStore</th>
-                        <th>Products</th>
+                        <th>Contact</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -48,9 +53,9 @@ function StoreAccept() {
                 <tbody>
                     {data.map((item) => (
                         <tr key={item.id}>
-                            <th>{item.id}</th>
-                            <td>{item.eStore}</td>
-                            <td>{item.products}</td>
+                            <td>{item.id}</td>
+                            <td>{item.name || '-'}</td>
+                            <td>{item.email || '-'}</td>
                             <td>
                                 <button
                                     className="btn btn-secondary btn-square btn-xs"
@@ -87,7 +92,7 @@ function StoreAccept() {
                     ))}
                 </tbody>
             </table>
-        </div>
+        </div></>
     );
 }
 

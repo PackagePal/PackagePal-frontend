@@ -1,29 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 
 function Deliveries() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      trackingNumber: '1Z12345E0291980793',
-      name: 'António Ramos',
-      contact: '961111111',
-      status: 'Delivered',
-      type: 'Magazine',
-      eStore: 'Readly',
-    },
-    {
-      id: 2,
-      trackingNumber: 'LT987654321CN',
-      name: 'Maria dos Ceus',
-      contact: '961222222',
-      status: 'Delivered',
-      type: 'Book',
-      eStore: 'Bertrand',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const getCache = async () => {
+    await fetch(`http://localhost:8080/api/v1/packages/`, {
+    })
+      .then((res) => {
+        if (res.status === 200) return res.json();
+      })
+      .then((data) => {
+        setData(data);
+      });
+  };
+
+  useEffect(() => {
+    getCache();
+  }, []);
 
   return (
-    <div className="overflow-x-auto">
+    <><Navbar /><div className="overflow-x-auto">
       <table className="table table-compact w-full">
         <thead>
           <tr>
@@ -32,7 +28,7 @@ function Deliveries() {
             <th>Name</th>
             <th>Contact</th>
             <th>Status</th>
-            <th>Type</th>
+            <th>pickupPoint</th>
             <th>eStore</th>
             <th></th>
           </tr>
@@ -40,18 +36,18 @@ function Deliveries() {
         <tbody>
           {data.map((item) => (
             <tr key={item.id}>
-              <th>{item.id}</th>
-              <td>{item.trackingNumber}</td>
-              <td>{item.name}</td>
-              <td>{item.contact}</td>
-              <td>{item.status}</td>
-              <td>{item.type}</td>
-              <td>{item.eStore}</td>
+              <td>{item.id}</td>
+              <td>{item.packageId || '-'}</td>
+              <td>{item.userName || '-'}</td>
+              <td>{item.userEmail || '-'}</td>
+              <td>{item.status || '-'}</td>
+              <td>{item.pickupPoint.address || '-'}</td>
+              <td>{item.store.name || '-'}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </div></>
   );
 }
 
