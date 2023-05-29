@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
-function Deliveries() {
+const Deliveries = () =>{
   const [data, setData] = useState([]);
   const getCache = async () => {
     await fetch(`http://localhost:8080/api/v1/packages/`, {
