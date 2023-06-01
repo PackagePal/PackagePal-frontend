@@ -32,6 +32,7 @@ const TableACP = () => {
                         })
                     );
                     setDeliveredMessage("Package Collected");
+                    window.location.reload(); // Atualiza a página
                 } else {
                     setDeliveredMessage("Failed to deliver");
                 }
@@ -49,10 +50,9 @@ const TableACP = () => {
                 if (res.status === 200) return res.json();
             })
             .then((data) => {
-                console.log(data.status)
-                // if(data.status === "DELIVERED"){
-                    setData(data);
-                // }
+                console.log(data);
+                const deliveredPackages = data.filter((data) => data.status === "DELIVERED" && data.pickupPoint.name === "Nossa Loja");
+                setData(deliveredPackages);               
             });
     };
 

@@ -4,7 +4,7 @@ import TableACP from '../components/TableACP';
 function ACP(){
     return(
         <><NavbarACP />
-        <h1 style={{ fontSize: '3rem', textAlign: 'center',color: '(var(--n)'}}>At the Store</h1><div className="px-8 py-4">
+        <h1 style={{ fontSize: '3rem', textAlign: 'center',color: '(var(--n)'}}>Our Store</h1><div className="px-8 py-4">
             <TableACP />
         </div></>
     )
