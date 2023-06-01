@@ -30,22 +30,19 @@ function Statistics() {
 
     return (
         <><Navbar />
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div className="overflow-x-auto py-8" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ alignSelf: "center" }}>
                     <h3 className="text-2xl font-bold">Number of packages in each state</h3>
                 </div>
-                <div style={{ width: 700, height: 600 }}>
+                <div style={{ width: 500, height: 400 }}>
                     <GraphState chartData={chartData} />
                 </div>
-            </div>
 
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <h3 className="text-2xl font-bold">Points per city</h3>
-                <div style={{ width: 550, height: 550 }}>
+                <div style={{ width: 400, height: 400 }}>
                     <GraphPoints chartData={chartData2} />
                 </div>
             </div>
-
         </>
 
     )

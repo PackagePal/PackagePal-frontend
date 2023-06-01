@@ -2,6 +2,43 @@ import React, { useEffect, useState } from 'react';
 
 const TableACP = () => {
     const [data, setData] = useState([]);
+    const [deliveredMessage, setDeliveredMessage] = useState('');
+
+    const handleAcceptClick = (id) => {
+        // Send a request to remove the item from the server/API
+        fetch(`http://localhost:8080/api/v1/packages/${id}/status`, {
+            method: "PUT",
+            body: "DELIVERED"
+            ,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    // If the update was successful, update the data state
+                    setData((prevData) =>
+                        prevData.map((item) => {
+                            if (item.id === id) {
+                                return {
+                                    ...item,
+                                    status: "accepted",
+                                };
+                            }
+                            return item;
+                        })
+                    );
+                    setDeliveredMessage("Store accepted");
+                } else {
+                    setDeliveredMessage("Failed to accept store");
+                }
+            })
+            .catch((error) => {
+                console.error("Error accepting store:", error);
+                setDeliveredMessage("Failed to accept store");
+            });
+    };
+
     const getCache = async () => {
         await fetch(`http://localhost:8080/api/v1/packages/`, {
         })
@@ -16,14 +53,6 @@ const TableACP = () => {
     useEffect(() => {
         getCache();
     }, []);
-
-    const [deliveredMessage, setCheckInMessage] = useState('');
-
-    const handleAcceptClick = (id) => {
-        const updatedData = data.filter((item) => item.id !== id);
-        setData(updatedData);
-        setCheckInMessage('Collected');
-    };
 
     return (
         <div className="overflow-x-auto">

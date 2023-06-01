@@ -19,7 +19,7 @@ const Deliveries = () =>{
   }, []);
 
   return (
-    <><Navbar /><div className="overflow-x-auto">
+    <><Navbar /><div className="overflow-x-auto px-8 py-4">
       <table className="table table-compact w-full">
         <thead>
           <tr>
