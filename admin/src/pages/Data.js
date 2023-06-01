@@ -1,22 +1,22 @@
 export const UserData = [
     {
         id: 1,
-        state: 'Delivered',
+        state: 'DELIVERED',
         value: 300,
     },
     {
         id: 2,
-        state: 'Pending',
+        state: 'PENDING',
         value: 50,
     },
     {
         id: 3,
-        state: 'Collected',
+        state: 'IN_TRANSIT',
         value: 100,
     },
     {
         id: 4,
-        state: 'In Transit',
+        state: 'COLLECTED',
         value: 200,
     },
 ];

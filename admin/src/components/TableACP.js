@@ -4,11 +4,14 @@ const TableACP = () => {
     const [data, setData] = useState([]);
     const [deliveredMessage, setDeliveredMessage] = useState('');
 
-    const handleAcceptClick = (id) => {
+    const handleAcceptClick = (packageId) => {
         // Send a request to remove the item from the server/API
-        fetch(`http://localhost:8080/api/v1/packages/${id}/status`, {
+        console.log(packageId)
+        fetch(`http://localhost:8080/api/v1/packages/${packageId}/status`, {
             method: "PUT",
-            body: "DELIVERED"
+            body: JSON.stringify({
+                newStatus: "COLLECTED"
+            })
             ,
             headers: {
                 "Content-Type": "application/json",
@@ -19,18 +22,18 @@ const TableACP = () => {
                     // If the update was successful, update the data state
                     setData((prevData) =>
                         prevData.map((item) => {
-                            if (item.id === id) {
+                            if (item.packageId === packageId) {
                                 return {
                                     ...item,
-                                    status: "accepted",
+                                    status: "COLLECTED",
                                 };
                             }
                             return item;
                         })
                     );
-                    setDeliveredMessage("Store accepted");
+                    setDeliveredMessage("Package Collected");
                 } else {
-                    setDeliveredMessage("Failed to accept store");
+                    setDeliveredMessage("Failed to deliver");
                 }
             })
             .catch((error) => {
@@ -46,7 +49,10 @@ const TableACP = () => {
                 if (res.status === 200) return res.json();
             })
             .then((data) => {
-                setData(data);
+                console.log(data.status)
+                // if(data.status === "DELIVERED"){
+                    setData(data);
+                // }
             });
     };
 
@@ -83,7 +89,7 @@ const TableACP = () => {
                             <td>{item.status || '-'}</td>
                             <td>{item.store.name || '-'}</td>
                             <td>
-                                <button className="btn btn-accent btn-square btn-xs" onClick={() => handleAcceptClick(item.id)}>
+                                <button className="btn btn-accent btn-square btn-xs" onClick={() => handleAcceptClick(item.packageId)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                     </svg>
