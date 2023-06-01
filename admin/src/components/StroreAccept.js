@@ -1,99 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar';
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const StoreAccept = () => {
-    const [data, setData] = useState([]);
+    const history = useNavigate();
 
-    const [checkInMessage, setCheckInMessage] = useState('');
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
 
-    const handleRemoveClick = (id) => {
-        console.log(`Remove button clicked for item ${id}`);
-        const updatedData = data.filter((item) => item.id !== id);
-        setData(updatedData);
-        setCheckInMessage('eStore Declined');
-    };
-
-    const handleAcceptClick = (id) => {
-        console.log(`Accept button clicked for item ${id}`);
-        const updatedData = data.filter((item) => item.id !== id);
-        setData(updatedData);
-        setCheckInMessage('eStore Accepted');
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/v1/stores/');
-                if (response.status === 200) {
-                    const data = await response.json();
-                    setData(data);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            let res = await fetch("http://localhost:8080/api/v1/stores/", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                }),
+            });
+            let resJson = await res.json();
+            if (res.status === 201) {
+                setName("");
+                setEmail("");
+                history('/stores');
+            } else {
+                setError("Could not create new Store!")
             }
-        };
-
-        fetchData();
-    }, []);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
-        <><Navbar /><div className="overflow-x-auto">
-            <div className="text-center mt-4 mb-4">
-                <h2 className="text-2xl">{checkInMessage}</h2></div>
-            <table className="table table-compact w-full">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>eStore</th>
-                        <th>Contact</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.name || '-'}</td>
-                            <td>{item.email || '-'}</td>
-                            <td>
-                                <button
-                                    className="btn btn-secondary btn-square btn-xs"
-                                    onClick={() => handleRemoveClick(item.id)}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </td>
-                            <td>
-                                <button
-                                    className="btn btn-accent btn-square btn-xs"
-                                    onClick={() => handleAcceptClick(item.id)}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div></>
+        <>
+            <div className="flex justify-center items-center pt-20 h-screen">
+                <form onSubmit={handleSubmit} className="bg-gray-100 p-6 rounded-lg">
+                    <div className="mb-4">
+                        <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+                            eStore:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="name"
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+                            Contact:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex justify-center">
+                        <button
+                            type="submit"
+                            className="btn btn-active btn-secondary"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
+                <p>{error}</p>
+            </div>
+        </>
     );
-}
+};
 
 export default StoreAccept;

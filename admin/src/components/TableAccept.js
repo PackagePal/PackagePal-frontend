@@ -1,106 +1,156 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+const TableAccept = () => {
+    const history = useNavigate();
 
-function TableAccept() {
-    const [data, setData] = useState([]);
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [postalCode, setPostalCode] = useState("");
+    const [lat, setLat] = useState(0.0);
+    const [lng, setLng] = useState(0.0);
+    const [error, setError] = useState("");
 
-    const [checkInMessage, setCheckInMessage] = useState('');
-
-    const handleRemoveClick = (id) => {
-        console.log(`Remove button clicked for item ${id}`);
-        const updatedData = data.filter((item) => item.id !== id);
-        setData(updatedData);
-        setCheckInMessage('Point Declined');
-    };
-
-    const handleAcceptClick = (id) => {
-        console.log(`Accept button clicked for item ${id}`);
-        // Add your logic for accepting the item here
-        const updatedData = data.filter((item) => item.id !== id);
-        setData(updatedData);
-        setCheckInMessage('Point Accepted');
-    };
-
-    const getCache = async () => {
-        await fetch(`http://localhost:8080/api/v1/pickuppoints/`, {
-        })
-            .then((res) => {
-                if (res.status === 200) return res.json();
-            })
-            .then((data) => {
-                setData(data);
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            let res = await fetch("http://localhost:8080/api/v1/pickuppoints/", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    address: address,
+                    city: city,
+                    postalCode: postalCode,
+                    lat: lat,
+                    lng: lng
+                }),
             });
+            let resJson = await res.json();
+            if (res.status === 201) {
+                setName("");
+                setAddress("");
+                setCity("");
+                setPostalCode("");
+                setLat("");
+                setLng("");
+                history('/points');
+            } else {
+                setError("Could not create new Pickup!")
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
-
-    useEffect(() => {
-        getCache();
-    }, []);
 
     return (
-        <><Navbar /><div className="overflow-x-auto">
-            <div className="text-center mt-4 mb-4">
-                <h2 className="text-2xl">{checkInMessage}</h2></div>
-            <table className="table table-compact w-full">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>City</th>
-                        <th>Postal Code</th>
-                        <th>Lat</th>
-                        <th>Long</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.name || '-'}</td>
-                            <td>{item.address || '-'}</td>
-                            <td>{item.city || '-'}</td>
-                            <td>{item.postalCode || '-'}</td>
-                            <td>{item.lat || '-'}</td>
-                            <td>{item.lng || '-'}</td>
-                            <td>
-                                <button
-                                    className="btn btn-secondary btn-square btn-xs"
-                                    onClick={() => handleRemoveClick(item.id)}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </td>
-                            <td>
-                                <button
-                                    className="btn btn-accent btn-square btn-xs"
-                                    onClick={() => handleAcceptClick(item.id)}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div></>
+        <>
+            <div className="flex justify-center items-center pt-20 h-screen">
+                <form onSubmit={handleSubmit} className="bg-gray-100 p-6 rounded-lg">
+                    <div className="mb-4">
+                        <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+                            Name:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="name"
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="address" className="block text-gray-700 font-bold mb-2">
+                            Address:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="address"
+                            name="address"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="city" className="block text-gray-700 font-bold mb-2">
+                            City:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="city"
+                            name="city"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="postalCode" className="block text-gray-700 font-bold mb-2">
+                            Postal Code:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="postalCode"
+                            name="postalCode"
+                            value={postalCode}
+                            onChange={(e) => setPostalCode(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="lat" className="block text-gray-700 font-bold mb-2">
+                            Latitude:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="lat"
+                            name="lat"
+                            value={lat}
+                            onChange={(e) => setLat(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="lng" className="block text-gray-700 font-bold mb-2">
+                            Longitude:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            id="lng"
+                            name="lng"
+                            value={lng}
+                            onChange={(e) => setLng(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex justify-center">
+                        <button
+                            type="submit"
+                            className="btn btn-active btn-secondary"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
+                <p>{error}</p>
+            </div>
+        </>
     );
 }
 

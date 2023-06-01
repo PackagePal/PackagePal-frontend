@@ -5,10 +5,21 @@ const StoreTable = () => {
   const [checkInMessage, setCheckInMessage] = useState('');
 
   const handleRemoveClick = (id) => {
-    const updatedData = data.filter((item) => item.id !== id);
-    setData(updatedData);
-    setCheckInMessage('eStore removed');
-  };
+    // Send a request to remove the item from the server/API
+    fetch(`http://localhost:8080/api/v1/stores/${id}`, {
+        method: "DELETE",
+    })
+        .then((res) => {
+            if (res.status === 204) {
+                // If the removal was successful, update the data state
+                setData((prevData) => prevData.filter((item) => item.id !== id));
+                setCheckInMessage("Store removed");
+            }
+        })
+        .catch((error) => {
+            console.error("Error removing item:", error);
+        });
+};
 
   useEffect(() => {
     const fetchData = async () => {
