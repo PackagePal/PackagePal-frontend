@@ -1,15 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function Table() {
+const Table = () => {
+    const [data, setData] = useState([]);
+
+    const [checkInMessage, setCheckInMessage] = useState('');
+
+    const handleRemoveClick = (id) => {
+        // Send a request to remove the item from the server/API
+        fetch(`http://localhost:8080/api/v1/pickuppoints/${id}`, {
+            method: "DELETE",
+        })
+            .then((res) => {
+                if (res.status === 204) {
+                    // If the removal was successful, update the data state
+                    setData((prevData) => prevData.filter((item) => item.id !== id));
+                    setCheckInMessage("Point removed");
+                }
+            })
+            .catch((error) => {
+                console.error("Error removing item:", error);
+            });
+    };
+
+    const getCache = async () => {
+        await fetch(`http://localhost:8080/api/v1/pickuppoints/`, {
+        })
+            .then((res) => {
+                if (res.status === 200) return res.json();
+            })
+            .then((data) => {
+                setData(data);
+            });
+    };
+
+    useEffect(() => {
+        getCache();
+    }, []);
+
     return (
         <div className="overflow-x-auto">
+            <div className="text-center mt-4 mb-4">
+                <h2 className="text-2xl">{checkInMessage}</h2></div>
             <table className="table table-compact w-full">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Id</th>
                         <th>Name</th>
+                        <th>Address</th>
                         <th>City</th>
-                        <th>Adress</th>
                         <th>Postal Code</th>
                         <th>Lat</th>
                         <th>Long</th>
@@ -17,32 +55,38 @@ function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>Optica de Esgueira</td>
-                        <td>Esgueira</td>
-                        <td>Rua Jose Luciano de Castro 155</td>
-                        <td>3800-207</td>
-                        <td>40.6473479</td>
-                        <td>-8.6339323</td>
-                        <td><button className="btn btn-secondary btn-square btn-xs">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button></td>
-                    </tr>
-                    <tr>
-                        <th>2</th>
-                        <td>Locker FNAC Aveiro</td>
-                        <td>Aveiro</td>
-                        <td>R do Batalhao de Cacadores 10</td>
-                        <td>3810-064</td>
-                        <td> 40.6410097</td>
-                        <td>-8.6534492</td>
-                        <td><button className="btn btn-secondary btn-square btn-xs">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button></td>
-                    </tr>
+                    {data.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.id}</td>
+                            <td>{item.name || '-'}</td>
+                            <td>{item.address || '-'}</td>
+                            <td>{item.city || '-'}</td>
+                            <td>{item.postalCode || '-'}</td>
+                            <td>{item.lat || '-'}</td>
+                            <td>{item.lng || '-'}</td>
+                            <td>
+                                <button
+                                    className="btn btn-secondary btn-square btn-xs"
+                                    onClick={() => handleRemoveClick(item.id)}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
