@@ -10,7 +10,7 @@ const StoreAccept = () => {
     let handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            let res = await fetch("http://localhost:8080/api/v1/stores/", {
+            let res = await fetch("http://192.168.160.234:8080/api/v1/stores/", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

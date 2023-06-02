@@ -7,7 +7,7 @@ const TableACP = () => {
     const handleAcceptClick = (packageId) => {
         // Send a request to remove the item from the server/API
         console.log(packageId)
-        fetch(`http://localhost:8080/api/v1/packages/${packageId}/status`, {
+        fetch(`http://192.168.160.234:8080/api/v1/packages/${packageId}/status`, {
             method: "PUT",
             body: JSON.stringify({
                 newStatus: "COLLECTED"
@@ -44,7 +44,7 @@ const TableACP = () => {
     };
 
     const getCache = async () => {
-        await fetch(`http://localhost:8080/api/v1/packages/`, {
+        await fetch(`http://192.168.160.234:8080/api/v1/packages/`, {
         })
             .then((res) => {
                 if (res.status === 200) return res.json();

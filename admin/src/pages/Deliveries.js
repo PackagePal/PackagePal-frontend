@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 const Deliveries = () =>{
   const [data, setData] = useState([]);
   const getCache = async () => {
-    await fetch(`http://localhost:8080/api/v1/packages/`, {
+    await fetch(`http://192.168.160.234:8080/api/v1/packages/`, {
     })
       .then((res) => {
         if (res.status === 200) return res.json();

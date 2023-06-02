@@ -9,7 +9,7 @@ function Statistics() {
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
     const getCache = async () => {
-        await fetch(`http://localhost:8080/api/v1/packages/`, {
+        await fetch(`http://192.168.160.234:8080/api/v1/packages/`, {
         })
             .then((res) => {
                 if (res.status === 200) return res.json();
@@ -20,7 +20,7 @@ function Statistics() {
     };
 
     const getCache2 = async () => {
-        await fetch(`http://localhost:8080/api/v1/pickuppoints/`, {
+        await fetch(`http://192.168.160.234:8080/api/v1/pickuppoints/`, {
         })
             .then((res) => {
                 if (res.status === 200) return res.json();

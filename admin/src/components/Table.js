@@ -7,7 +7,7 @@ const Table = () => {
 
     const handleRemoveClick = (id) => {
         // Send a request to remove the item from the server/API
-        fetch(`http://localhost:8080/api/v1/pickuppoints/${id}`, {
+        fetch(`http://192.168.160.234:8080/api/v1/pickuppoints/${id}`, {
             method: "DELETE",
         })
             .then((res) => {
@@ -23,7 +23,7 @@ const Table = () => {
     };
 
     const getCache = async () => {
-        await fetch(`http://localhost:8080/api/v1/pickuppoints/`, {
+        await fetch(`http://192.168.160.234:8080/api/v1/pickuppoints/`, {
         })
             .then((res) => {
                 if (res.status === 200) return res.json();

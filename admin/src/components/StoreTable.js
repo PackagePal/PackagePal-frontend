@@ -6,7 +6,7 @@ const StoreTable = () => {
 
   const handleRemoveClick = (id) => {
     // Send a request to remove the item from the server/API
-    fetch(`http://localhost:8080/api/v1/stores/${id}`, {
+    fetch(`http://192.168.160.234:8080/api/v1/stores/${id}`, {
         method: "DELETE",
     })
         .then((res) => {
@@ -24,7 +24,7 @@ const StoreTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/stores/');
+        const response = await fetch('http://192.168.160.234:8080/api/v1/stores/');
         if (response.status === 200) {
           const data = await response.json();
           setData(data);
